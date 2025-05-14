@@ -166,7 +166,7 @@ workflow BACASS {
     // MODULE: Nanoplot, quality check for nanopore reads and Quality/Length Plots
     //
     NANOPLOT (
-        ch_longreads
+        ch_longreads_concat
     )
     ch_nanoplot_txt_multiqc = NANOPLOT.out.txt
     ch_versions = ch_versions.mix(NANOPLOT.out.versions)
@@ -190,7 +190,7 @@ workflow BACASS {
     ch_porechop_log_multiqc = Channel.empty()
     if ( params.assembly_type == 'hybrid' || params.assembly_type == 'long' && !('short' in params.assembly_type) ) {
         PORECHOP_PORECHOP (
-            ch_longreads.dump(tag: 'longreads')
+            ch_longreads_concat.dump(tag: 'longreads')
         )
         ch_porechop_log_multiqc = PORECHOP_PORECHOP.out.log
         ch_versions = ch_versions.mix( PORECHOP_PORECHOP.out.versions )
